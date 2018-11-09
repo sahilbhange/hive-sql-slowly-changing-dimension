@@ -1,1 +1,142 @@
 
+create database yelp_data_part_sbhange;
+
+set hive.execution.engine=tez;
+
+
+CREATE EXTERNAL TABLE yelp_user_stg_text 
+(
+  user_id string,
+  name string,
+  review_count int,
+  yelping_since date,
+  useful int,
+  funny int,
+  cool int,
+  fans int,
+  elite string,
+  average_stars float,
+  compliment_hot int,
+  compliment_more int,
+  compliment_profile int,
+  compliment_cute int,
+  compliment_list int,
+  compliment_note int,
+  compliment_plain int,
+  compliment_cool int,
+  compliment_funny int,
+  compliment_writer int,
+  compliment_photos int,
+  month_date date
+) 
+ROW FORMAT SERDE 'org.apache.hadoop.hive.serde2.OpenCSVSerde'
+WITH SERDEPROPERTIES 
+(
+   "separatorChar" = ",",
+   "quoteChar"     = "\""
+)
+stored as textfile
+LOCATION '/user/sahilbhange/part/yelp_stg_text/'
+tblproperties("skip.header.line.count"="1");
+
+
+CREATE EXTERNAL TABLE yelp_user_stg 
+(
+  user_id string,
+  name string,
+  review_count int,
+  yelping_since date,
+  useful int,
+  funny int,
+  cool int,
+  fans int,
+  elite string,
+  average_stars float,
+  compliment_hot int,
+  compliment_more int,
+  compliment_profile int,
+  compliment_cute int,
+  compliment_list int,
+  compliment_note int,
+  compliment_plain int,
+  compliment_cool int,
+  compliment_funny int,
+  compliment_writer int,
+  compliment_photos int,
+  month_date date
+) 
+PARTITIONED BY (part_key int)
+CLUSTERED BY (user_id) SORTED BY (user_id) INTO 4 BUCKETS
+row format delimited fields terminated by ',' lines terminated BY '\n' 
+stored as orc
+LOCATION '/user/sahilbhange/part/yelp_stg_orc/'; 
+
+
+
+
+CREATE EXTERNAL TABLE yelp_user_hist
+(
+  user_id string,
+  name string,
+  review_count int,
+  yelping_since date,
+  useful int,
+  funny int,
+  cool int,
+  fans int,
+  elite string,
+  average_stars float,
+  compliment_hot int,
+  compliment_more int,
+  compliment_profile int,
+  compliment_cute int,
+  compliment_list int,
+  compliment_note int,
+  compliment_plain int,
+  compliment_cool int,
+  compliment_funny int,
+  compliment_writer int,
+  compliment_photos int,
+  eff_dt date,
+  exp_dt date,
+  proc_dt date
+) 
+PARTITIONED BY (part_key int)
+CLUSTERED BY (user_id) SORTED BY (user_id) INTO 4 BUCKETS
+row format delimited fields terminated by ',' lines terminated BY '\n' 
+stored as orc
+LOCATION '/user/sahilbhange/part/yelp_hist/'; 
+
+
+CREATE EXTERNAL TABLE yelp_user_hist_stg
+(
+  user_id string,
+  name string,
+  review_count int,
+  yelping_since date,
+  useful int,
+  funny int,
+  cool int,
+  fans int,
+  elite string,
+  average_stars float,
+  compliment_hot int,
+  compliment_more int,
+  compliment_profile int,
+  compliment_cute int,
+  compliment_list int,
+  compliment_note int,
+  compliment_plain int,
+  compliment_cool int,
+  compliment_funny int,
+  compliment_writer int,
+  compliment_photos int,
+  eff_dt date,
+  exp_dt date,
+  proc_dt date
+) 
+PARTITIONED BY (part_key int)
+CLUSTERED BY (user_id) SORTED BY (user_id) INTO 4 BUCKETS
+row format delimited fields terminated by ',' lines terminated BY '\n' 
+stored as orc
+LOCATION '/user/sahilbhange/part/yelp_data_hist_stg/'; 

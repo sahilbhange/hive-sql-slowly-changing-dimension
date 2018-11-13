@@ -33,7 +33,8 @@ select * from yelp_user_hist where exp_dt != '2099-12-31';
 insert into yelp_user_hist_stg partition (part_key)
 select hist.* from yelp_user_hist hist
 inner join yelp_user_stg stg
-on hist.user_id = stg.user_id
+on hist.part_key = stg.part_key
+and hist.user_id = stg.user_id
 where hist.review_count  = stg.review_count
 and hist.useful = stg.useful
 and hist.funny = stg.funny
@@ -63,7 +64,8 @@ stg.compliment_photos, cast(date_format('${hiveconf:RUN_DATE}','yyyy-MM-dd') as 
 cast(date_format('2099-12-31','yyyy-MM-dd') as date), stg.month_date ,stg.part_key
 from yelp_user_stg stg
 left join (select * from yelp_user_hist where exp_dt = '2099-12-31') hist
-on hist.user_id = stg.user_id
+on hist.part_key = stg.part_key
+and hist.user_id = stg.user_id
 where hist.user_id is null
 or hist.review_count  != stg.review_count
 or hist.useful != stg.useful
@@ -92,7 +94,8 @@ hist.compliment_plain,  hist.compliment_cool,  hist.compliment_funny,  hist.comp
 hist.eff_dt, cast(date_format('${hiveconf:EXP_DATE}','yyyy-MM-dd') as date), hist.proc_dt ,stg.part_key
 from (select * from yelp_user_hist where exp_dt = '2099-12-31') hist
 left join yelp_user_stg stg
-on hist.user_id = stg.user_id
+on hist.part_key = stg.part_key
+and hist.user_id = stg.user_id
 where hist.user_id is null
 or hist.name != stg.name
 or hist.review_count  != stg.review_count

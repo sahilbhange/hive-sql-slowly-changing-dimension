@@ -201,29 +201,6 @@ yelp_user_20181031_updated.to_csv('/Users/sbhange/yelp_data/yelp_user_20181031.c
 
 
 
-##  Add partition field in the hive table
-
-
-len(yelp_user_20180731)
-
-yelp_user_20180731_442000 = yelp_user_20180731[0:442000]
-
-
-yelp_user_20180731_884100 = yelp_user_20180731[442000:884100]
-
-
-yelp_user_20180731_1326100 = yelp_user_20180731[884100:]
-
-
-yelp_user_20181031_updated = pd.concat([yelp_user_20181031_1325600, yelp_user_20181031_500], axis=0)
-                                               
-yelp_user_part_20180731
-
-
-
-temp = yelp_user_20180731[0:2000]
-
-
 
 
 

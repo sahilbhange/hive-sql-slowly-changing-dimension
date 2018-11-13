@@ -1,0 +1,11 @@
+Approach:
+
+First Run:
+
+Load first data file to STG table and perform insert into from STG table to set effective and expiry date.
+
+Monthly Run:
+
+Load new files data to STG table and compare the data with the historical table to identify the new and changed users.
+
+Both the STG and HIST tables will be created in the ORC format for optimal performance

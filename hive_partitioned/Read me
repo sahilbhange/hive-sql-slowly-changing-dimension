@@ -1,0 +1,50 @@
+Approach:
+
+First Run:
+
+Load first data file to STG table and perform insert into from STG table to set effective and expiry date.
+
+Monthly Run:
+
+Load new files data to STG table and compare the data with the historical table to identify the new and changed users.
+
+Both the STG and HIST tables will be created in the ORC format for optimal performance
+
+Partitioned Hive tables with buckets:
+
+Table definition is given in the below file:
+
+https://github.com/sahilbhange/slowly-changing-dimention/blob/master/hive_partitioned/hive_partitioned_create_table
+
+Partitioning is helpful for partition pruning and achieving parallelism 
+
+See below link for Hive query optimization
+
+https://www.qubole.com/blog/hive-best-practices/
+
+Identify a good partition key, which will distribute the data evenly into the partitions and use it in the join key.
+
+Partition Key:
+
+After trying various columns for partition key, month from the yelping_since date distributes data evenly
+
+select part_key,count(*) from 
+(
+SELECT CASE WHEN month(yelping_since) in (1,2,3) THEN 1
+            WHEN month(yelping_since) in (4,5,6) THEN 2
+            WHEN month(yelping_since) in (7,8,9) THEN 3            
+        ELSE 4 END AS part_key
+from yelp_user_hist
+) temp
+group by part_key;
+
+--> Result  
+OK
+1       326984
+2       335878
+3       359265
+4       303973
+
+Buckets (Clustered By):
+
+Since we are joining 2 tables on user_id key, create 4 buckets sorted by user_id column as sorting each bucket on user_id will help in join performance.

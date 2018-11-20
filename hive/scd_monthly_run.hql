@@ -87,7 +87,7 @@ hist.compliment_photos, hist.eff_dt, cast(date_format('${hiveconf:EXP_DATE}','yy
 from (select * from yelp_user_hist where exp_dt = '2099-12-31') hist
 left join yelp_user_stg stg
 on hist.user_id = stg.user_id
-where hist.user_id is null
+where stg.user_id is null
 or hist.name != stg.name
 or hist.review_count  != stg.review_count
 or hist.useful != stg.useful

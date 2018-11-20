@@ -17,14 +17,7 @@ Table definition is given in the below file:
 
 https://github.com/sahilbhange/slowly-changing-dimention/blob/master/hive_partitioned/hive_partitioned_create_table
 
-Partitioning is helpful for partition pruning and achieving parallelism 
-
-See below link for Hive query optimization
-
-https://www.qubole.com/blog/hive-best-practices/
-
-Identify a good partition key, which will distribute the data evenly into the partitions and use it in the join key.
-
 Buckets (Clustered By):
 
-Since we are joining 2 tables on user_id key, create 4 buckets sorted by user_id column as sorting each bucket on user_id will help in join performance.
+Since we are joining 2 tables on user_id key, create 4 buckets sorted by user_id column as sorting each bucket on user_id will 
+help in join performance.

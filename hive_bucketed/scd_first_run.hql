@@ -15,5 +15,29 @@ dfs -copyFromLocal /home/sahilbhange/landing/yelp_data/yelp_user_${hiveconf:FILE
 insert into yelp_user_stg select * from yelp_user_stg_text;
 
 -- Load data from STG to HIST table and set expiry and effective date
-insert into yelp_user_hist
-select user_id,  name,  review_count,  yelping_since,  useful,  funny,  cool,  fans,  elite,  average_stars,  compliment_hot,  compliment_more,  compliment_profile,  compliment_cute,  compliment_list,  compliment_note,  compliment_plain,  compliment_cool,  compliment_funny,  compliment_writer,  compliment_photos, '${hiveconf:RUN_DATE}', '2099-12-31', month_date from yelp_user_stg;
+INSERT INTO yelp_user_hist 
+SELECT user_id, 
+       NAME, 
+       review_count, 
+       yelping_since, 
+       useful, 
+       funny, 
+       cool, 
+       fans, 
+       elite, 
+       average_stars, 
+       compliment_hot, 
+       compliment_more, 
+       compliment_profile, 
+       compliment_cute, 
+       compliment_list, 
+       compliment_note, 
+       compliment_plain, 
+       compliment_cool, 
+       compliment_funny, 
+       compliment_writer, 
+       compliment_photos, 
+       '${hiveconf:RUN_DATE}', 
+       '2099-12-31', 
+       month_date 
+FROM   yelp_user_stg; 
